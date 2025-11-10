@@ -1,4 +1,3 @@
-src\ecotrack\ComparadorTipo.java
 package ecotrack;
 
 import java.util.Comparator;
@@ -9,3 +8,4 @@ public class ComparadorTipo implements Comparator<Residuo> {
         return r1.getTipo().compareToIgnoreCase(r2.getTipo());
     }
 }
+
