@@ -1,4 +1,3 @@
-src\ecotrack\ComparadorPrioridad.java
 package ecotrack;
 
 import java.util.Comparator;
@@ -10,4 +9,5 @@ public class ComparadorPrioridad implements Comparator<Residuo> {
         return Integer.compare(r1.getPrioridad(), r2.getPrioridad());
     }
 }
+
 
