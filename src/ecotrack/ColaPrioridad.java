@@ -1,4 +1,3 @@
-src\ecotrack\ColaPrioridad.java
 package ecotrack;
 
 import java.util.Comparator;
@@ -44,3 +43,4 @@ public class ColaPrioridad {
         return sb.toString();
     }
 }
+
