@@ -216,17 +216,39 @@ public class EcoTrackGUI extends JFrame {
     }
 
     private void mostrarResiduos() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Residuo> it = listaResiduos.iteradorAdelante();
-        if (!it.hasNext()) {
-            sb.append("No hay residuos registrados.");
-        } else {
-            while (it.hasNext()) {
-                sb.append(it.next()).append("\n");
-            }
-        }
-        mostrarSeccion("Lista de residuos", sb.toString());
+    String[] opciones = {"Hacia adelante (Cronológico)", "Hacia atrás (Más recientes)"};
+    int seleccion = JOptionPane.showOptionDialog(
+            this,
+            "¿En qué sentido desea ver los residuos?",
+            "Explorar Lista Circular",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]);
+
+    if (seleccion == -1) return;
+
+    StringBuilder sb = new StringBuilder();
+    Iterator<Residuo> it;
+
+    if (seleccion == 0) {
+        it = listaResiduos.iteradorAdelante();
+        sb.append("--- Recorrido Adelante ---\n");
+    } else {
+        it = listaResiduos.iteradorAtras();
+        sb.append("--- Recorrido Atrás ---\n");
     }
+
+    if (!it.hasNext()) {
+        sb.append("La lista está vacía.");
+    } else {
+        while (it.hasNext()) {
+            sb.append(it.next()).append("\n");
+        }
+    }
+    mostrarSeccion("Lista de residuos", sb.toString());
+}
 
     private void ordenarResiduos() {
         List<Residuo> aux = new ArrayList<>();
