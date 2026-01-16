@@ -14,18 +14,17 @@ public class ColaPrioridad {
         }
     }
 
-    // Constructor: Ahora ya no recibe nada de java.util
+    
     public ColaPrioridad() {
         this.frente = null;
         this.tamaño = 0;
     }
 
-    // MÉTODO CRÍTICO: Encolar manteniendo el orden
+    
     public void encolar(Residuo r) {
         Nodo nuevo = new Nodo(r);
 
-        // Caso 1: La cola está vacía o el nuevo tiene más prioridad que el frente
-        // (Prioridad 1 es mayor que 2)
+
         if (frente == null || r.getPrioridad() < frente.dato.getPrioridad()) {
             nuevo.siguiente = frente;
             frente = nuevo;

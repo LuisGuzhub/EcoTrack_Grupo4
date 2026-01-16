@@ -113,7 +113,7 @@ public Iterator<Residuo> iteradorAtras() {
             } while (actual.siguiente != inicio); // Recorrido completo de la circular
         } while (intercambiado);
     }
-//Método de Eliminación (cuando un residuo se mueve a la cola de prioridad), la lista debe poder eliminar elementos)
+
 public boolean eliminar(int id) {
     if (inicio == null) return false;
 

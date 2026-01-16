@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Utilidad {
-    private Map<String, Zona> mapaZonas = new LinkedHashMap<>(); // [cite: 86]
+    private Map<String, Zona> mapaZonas = new LinkedHashMap<>(); 
 
     public void agregarZona(Zona z) { mapaZonas.put(z.getNombre(), z); }
     public Map<String, Zona> getMapaZonas() { return mapaZonas; }
