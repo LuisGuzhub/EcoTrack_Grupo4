@@ -1,46 +1,67 @@
 package ecotrack;
 
 import java.util.Comparator;
-import java.util.PriorityQueue;
 
 public class ColaPrioridad {
 
-    private PriorityQueue<Residuo> cola;
+    private Nodo frente; // El elemento con mayor prioridad
+    private int tamaño;
 
-    public ColaPrioridad() {
-        cola = new PriorityQueue<>(Comparator.comparingInt(Residuo::getPrioridad));
+    private class Nodo {
+        Residuo dato;
+        Nodo siguiente;
+
+        Nodo(Residuo r) {
+            this.dato = r;
+        }
     }
 
+    // Constructor: Ahora ya no recibe nada de java.util
+    public ColaPrioridad() {
+        this.frente = null;
+        this.tamaño = 0;
+    }
+
+    // MÉTODO CRÍTICO: Encolar manteniendo el orden
     public void encolar(Residuo r) {
-        cola.add(r);
-        System.out.println("Residuo agregado a la cola: " + r.getNombre() + " (Prioridad " + r.getPrioridad() + ")");
+        Nodo nuevo = new Nodo(r);
+        
+        // Caso 1: La cola está vacía o el nuevo tiene más prioridad que el frente
+        // (Prioridad 1 es mayor que 2)
+        if (frente == null || r.getPrioridad() < frente.dato.getPrioridad()) {
+            nuevo.siguiente = frente;
+            frente = nuevo;
+        } else {
+            // Caso 2: Buscar la posición correcta según la prioridad
+            Nodo actual = frente;
+            while (actual.siguiente != null && 
+                   actual.siguiente.dato.getPrioridad() <= r.getPrioridad()) {
+                actual = actual.siguiente;
+            }
+            nuevo.siguiente = actual.siguiente;
+            actual.siguiente = nuevo;
+        }
+        tamaño++;
     }
 
     public Residuo desencolar() {
-        if (cola.isEmpty()) {
-            System.out.println("No hay residuos en la cola.");
-            return null;
-        }
-        Residuo r = cola.poll();
-        System.out.println("Residuo atendido: " + r.getNombre());
-        return r;
+        if (frente == null) return null;
+        
+        Residuo dato = frente.dato;
+        frente = frente.siguiente; // El siguiente pasa a ser el frente
+        tamaño--;
+        return dato;
     }
 
-    public void mostrarCola() {
-        System.out.print(generarReporteCola());
-    }
-
-    // Para la GUI
     public String generarReporteCola() {
-        if (cola.isEmpty()) {
-            return "No hay residuos en la cola de prioridad.\n";
-        }
+        if (frente == null) return "Cola vacía.\n";
+        
         StringBuilder sb = new StringBuilder();
-        sb.append("Residuos pendientes por prioridad:\n");
-        for (Residuo r : cola) {
-            sb.append(r).append("\n");
+        Nodo temp = frente;
+        while (temp != null) {
+            sb.append(temp.dato).append("\n");
+            temp = temp.temp.siguiente;
         }
         return sb.toString();
     }
 }
-
