@@ -42,7 +42,7 @@ public class PilaReciclaje {
         System.out.print(generarReportePila());
     }
 
-    // ✅ Versión para GUI: devuelve un texto bonito del contenido de la pila
+    // 
     public String generarReportePila() {
         StringBuilder sb = new StringBuilder();
         if (tope == null) {
