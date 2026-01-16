@@ -3,7 +3,7 @@ package ecotrack;
 public class ColaPrioridad {
 
     private Nodo frente; // El elemento con mayor prioridad
-    private int tamaño;
+    private int tamano;
 
     private class Nodo {
         Residuo dato;
