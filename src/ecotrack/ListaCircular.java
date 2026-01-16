@@ -68,4 +68,46 @@ public class ListaCircular {
         };
     }
 
+    // Iterador Hacia atrás
+public Iterator<Residuo> iteradorAtras() {
+    return new Iterator<Residuo>() {
+        private Nodo actual = (inicio != null) ? inicio.anterior : null;
+        private boolean primeraVez = true;
+
+        @Override
+        public boolean hasNext() {
+            if (inicio == null) return false;
+            return primeraVez || actual != inicio.anterior;
+        }
+
+        @Override
+        public Residuo next() {
+            Residuo dato = actual.dato;
+            actual = actual.anterior; // Movimiento hacia atrás
+            primeraVez = false;
+            return dato;
+        }
+    };
+}
+//Método de Eliminación (cuando un residuo se mueve a la cola de prioridad), la lista debe poder eliminar elementos)
+public boolean eliminar(int id) {
+    if (inicio == null) return false;
+
+    Nodo actual = inicio;
+    do {
+        if (actual.dato.getId() == id) {
+            if (actual == inicio && actual.siguiente == inicio) {
+                inicio = null; // Era el único elemento
+            } else {
+                actual.anterior.siguiente = actual.siguiente;
+                actual.siguiente.anterior = actual.anterior;
+                if (actual == inicio) inicio = actual.siguiente;
+            }
+            return true;
+        }
+        actual = actual.siguiente;
+    } while (actual != inicio);
+    return false;
+}
+
 }
