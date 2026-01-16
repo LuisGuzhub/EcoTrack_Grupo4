@@ -14,10 +14,10 @@ public class GestorArchivos {
 
     private static void guardarResiduos(ListaCircular lista, String ruta) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
-            Iterator<Residuo> it = lista.iteradorAdelante(); // Uso de iterador propio [cite: 85]
+            Iterator<Residuo> it = lista.iteradorAdelante(); // Uso de iterador propio 
             while (it.hasNext()) {
                 Residuo r = it.next();
-                // Formato: ID, nombre, tipo, peso, fecha, zona, prioridad [cite: 57]
+                // Formato: ID, nombre, tipo, peso, fecha, zona, prioridad 
                 bw.write(r.getId() + ";" + r.getNombre() + ";" + r.getTipo() + ";" + 
                          r.getPeso() + ";" + r.getFechaRecoleccion() + ";" + 
                          r.getZona() + ";" + r.getPrioridad());
@@ -29,14 +29,14 @@ public class GestorArchivos {
     private static void guardarZonas(Map<String, Zona> zonas, String ruta) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
             for (Zona z : zonas.values()) {
-                // Guarda estadísticas: nombre, recolectados y pendientes [cite: 65]
+                // Guarda estadísticas: nombre, recolectados y pendientes 
                 bw.write(z.getNombre() + ";" + z.getRecolectados() + ";" + z.getPendientes());
                 bw.newLine();
             }
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    // --- MÉTODOS DE CARGA (Indispensables para el inicio del sistema ) ---
+    // MÉTODOS DE CARGA 
 
     public static void cargarResiduos(ListaCircular lista, String ruta) {
         File archivo = new File(ruta);
@@ -52,7 +52,7 @@ public class GestorArchivos {
                         Double.parseDouble(p[3]), p[4], p[5], 
                         Integer.parseInt(p[6])
                     );
-                    lista.insertar(r); // Inserta en la lista propia [cite: 83]
+                    lista.insertar(r); // Inserta en la lista propia 
                 }
             }
         } catch (IOException | NumberFormatException e) { e.printStackTrace(); }
