@@ -1,7 +1,5 @@
 package ecotrack;
 
-import java.util.Comparator;
-
 public class ColaPrioridad {
 
     private Nodo frente; // El elemento con mayor prioridad
@@ -25,7 +23,7 @@ public class ColaPrioridad {
     // MÉTODO CRÍTICO: Encolar manteniendo el orden
     public void encolar(Residuo r) {
         Nodo nuevo = new Nodo(r);
-        
+
         // Caso 1: La cola está vacía o el nuevo tiene más prioridad que el frente
         // (Prioridad 1 es mayor que 2)
         if (frente == null || r.getPrioridad() < frente.dato.getPrioridad()) {
@@ -34,8 +32,8 @@ public class ColaPrioridad {
         } else {
             // Caso 2: Buscar la posición correcta según la prioridad
             Nodo actual = frente;
-            while (actual.siguiente != null && 
-                   actual.siguiente.dato.getPrioridad() <= r.getPrioridad()) {
+            while (actual.siguiente != null &&
+                    actual.siguiente.dato.getPrioridad() <= r.getPrioridad()) {
                 actual = actual.siguiente;
             }
             nuevo.siguiente = actual.siguiente;
@@ -45,8 +43,9 @@ public class ColaPrioridad {
     }
 
     public Residuo desencolar() {
-        if (frente == null) return null;
-        
+        if (frente == null)
+            return null;
+
         Residuo dato = frente.dato;
         frente = frente.siguiente; // El siguiente pasa a ser el frente
         tamaño--;
@@ -54,13 +53,14 @@ public class ColaPrioridad {
     }
 
     public String generarReporteCola() {
-        if (frente == null) return "Cola vacía.\n";
-        
+        if (frente == null)
+            return "Cola vacía.\n";
+
         StringBuilder sb = new StringBuilder();
         Nodo temp = frente;
         while (temp != null) {
             sb.append(temp.dato).append("\n");
-            temp = temp.temp.siguiente;
+            temp = temp.siguiente; // Solo un .siguiente
         }
         return sb.toString();
     }

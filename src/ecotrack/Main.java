@@ -1,52 +1,48 @@
 package ecotrack;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-
+        // Corrección del error mostrado en imagen: System.in es el estándar [cite: 136]
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== SISTEMA ECO-TRACK ===");
-        System.out.println("Gestión Inteligente de Residuos Urbanos");
+        System.out.println("Gestión Inteligente de Residuos Urbanos [cite: 3]");
         System.out.println("----------------------------------------");
 
-        // Estructuras principales
+        // Estructuras principales (Implementaciones propias obligatorias) [cite: 24, 81]
         ListaCircular listaResiduos = new ListaCircular();
         ColaPrioridad colaRutas = new ColaPrioridad();
         PilaReciclaje pilaReciclaje = new PilaReciclaje();
         Utilidad utilidad = new Utilidad();
 
-        // Archivo de residuos
+        // Archivos de persistencia [cite: 77]
         String rutaResiduos = Paths.get("data", "residuos.txt").toString();
+        String rutaZonas = Paths.get("data", "Zonas.txt").toString();
 
-        // Cargar datos iniciales (si existen)
+        // Cargar datos iniciales al iniciar el sistema 
         GestorArchivos.cargarResiduos(listaResiduos, rutaResiduos);
-
-        // Zonas de ejemplo (puedes luego cargarlas desde archivo)
-        utilidad.agregarZona(new Zona("Centro", 8, 3));
-        utilidad.agregarZona(new Zona("Norte", 2, 6));
-        utilidad.agregarZona(new Zona("Sur", 5, 5));
+        GestorArchivos.cargarZonas(utilidad, rutaZonas);
 
         boolean salir = false;
 
         while (!salir) {
             System.out.println("\n===== MENÚ ECO-TRACK =====");
             System.out.println("1. Registrar residuo");
-            System.out.println("2. Mostrar residuos (lista circular)");
-            System.out.println("3. Encolar residuo para recolección (cola de prioridad)");
-            System.out.println("4. Mostrar cola de prioridad");
-            System.out.println("5. Despachar siguiente residuo de la cola");
-            System.out.println("6. Enviar residuo a centro de reciclaje (pila)");
-            System.out.println("7. Procesar residuo del centro de reciclaje");
+            System.out.println("2. Mostrar residuos (lista circular doble)");
+            System.out.println("3. Encolar para recolección (Prioridad)");
+            System.out.println("4. Ver cola de prioridad");
+            System.out.println("5. Despachar vehículo");
+            System.out.println("6. Enviar a reciclaje (Pila)");
+            System.out.println("7. Procesar centro de reciclaje");
             System.out.println("8. Ver estado de zonas y zona crítica");
-            System.out.println("9. Ordenar residuos (peso / tipo / prioridad)");
-            System.out.println("10. Guardar residuos en archivo");
+            System.out.println("9. Ordenar residuos (Peso/Tipo/Prioridad)");
+            System.out.println("10. Guardar estado del sistema");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -54,182 +50,116 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    registrarResiduo(scanner, listaResiduos);
+                    registrarResiduo(scanner, listaResiduos, utilidad);
                     break;
-
                 case 2:
-                    System.out.println("\n--- Lista de residuos ---");
-                    listaResiduos.mostrarAdelante();
+                    System.out.println("\n--- Lista de residuos (Recorrido Adelante) ---");
+                    listaResiduos.mostrarAdelante(); // Método propio de tu ListaCircular
                     break;
-
                 case 3:
                     Residuo rEnc = seleccionarResiduo(scanner, listaResiduos);
-                    if (rEnc != null) {
-                        colaRutas.encolar(rEnc);
-                    }
+                    if (rEnc != null) colaRutas.encolar(rEnc);
                     break;
-
                 case 4:
-                    colaRutas.mostrarCola();
+                    // Corrección: método sincronizado con ColaPrioridad propia
+                    System.out.print(colaRutas.generarReporteCola()); 
                     break;
-
                 case 5:
-                    colaRutas.desencolar();
+                    colaRutas.desencolar(); // Despacho automático [cite: 62]
                     break;
-
                 case 6:
                     Residuo rPila = seleccionarResiduo(scanner, listaResiduos);
-                    if (rPila != null) {
-                        pilaReciclaje.apilar(rPila);
-                    }
+                    if (rPila != null) pilaReciclaje.apilar(rPila); // LIFO [cite: 64]
                     break;
-
                 case 7:
                     pilaReciclaje.desapilar();
                     break;
-
                 case 8:
-                    System.out.println("\n--- Estado de las Zonas ---");
-                    utilidad.mostrarZonas();
-                    Zona critica = utilidad.obtenerZonaCritica();
-                    if (critica != null) {
-                        System.out.println("Zona crítica actual: " + critica.getNombre()
-                                + " (Utilidad " + critica.calcularUtilidad() + ")");
-                    }
+                    // Análisis de utilidad ambiental [cite: 33]
+                    utilidad.construirDesdeResiduos(listaResiduos);
+                    System.out.print(utilidad.generarReporteZonas());
                     break;
-
                 case 9:
+                    // Uso de comparadores obligatorios [cite: 87]
                     ordenarResiduos(scanner, listaResiduos);
                     break;
-
                 case 10:
-                    GestorArchivos.guardarResiduos(listaResiduos, rutaResiduos);
+                    // Guardado manual de persistencia 
+                    GestorArchivos.guardarTodo(listaResiduos, utilidad.getMapaZonas(), rutaResiduos, rutaZonas);
+                    System.out.println("Sistema guardado.");
                     break;
-
                 case 0:
                     System.out.println("Guardando antes de salir...");
-                    GestorArchivos.guardarResiduos(listaResiduos, rutaResiduos);
+                    GestorArchivos.guardarTodo(listaResiduos, utilidad.getMapaZonas(), rutaResiduos, rutaZonas);
                     salir = true;
                     break;
-
                 default:
-                    System.out.println("Opción inválida. Intente nuevamente.");
+                    System.out.println("Opción no válida.");
             }
         }
-
         scanner.close();
-        System.out.println("Sistema Eco-Track finalizado.");
     }
 
-    // ================= FUNCIONES AUXILIARES =================
+    // Método para manejar los 3 comparadores requeridos [cite: 87]
+    private static void ordenarResiduos(Scanner scanner, ListaCircular lista) {
+        System.out.println("\nCriterio de ordenamiento:");
+        System.out.println("1. Por peso\n2. Por tipo\n3. Por prioridad ambiental");
+        int op = leerEntero(scanner);
+
+        Comparator<Residuo> comp;
+        if (op == 1) comp = new ComparadorPeso();
+        else if (op == 2) comp = new ComparadorTipo();
+        else comp = new ComparadorPrioridad();
+
+        lista.ordenar(comp); // Implementación de ordenamiento propia [cite: 81]
+        System.out.println("Lista ordenada exitosamente.");
+        lista.mostrarAdelante();
+    }
+
+    private static void registrarResiduo(Scanner scanner, ListaCircular lista, Utilidad utilidad) {
+        System.out.println("\n--- Nuevo Registro ---");
+        System.out.print("ID: "); int id = leerEntero(scanner);
+        System.out.print("Nombre: "); String nom = scanner.nextLine();
+        System.out.print("Tipo: "); String tipo = scanner.nextLine();
+        System.out.print("Peso (kg): "); double peso = leerDouble(scanner);
+        System.out.print("Fecha: "); String fec = scanner.nextLine();
+        System.out.print("Zona: "); String zon = scanner.nextLine();
+        System.out.print("Prioridad (1-3): "); int pri = leerEntero(scanner);
+
+        Residuo r = new Residuo(id, nom, tipo, peso, fec, zon, pri);
+        lista.insertar(r);
+        utilidad.construirDesdeResiduos(lista);
+    }
+
+    private static Residuo seleccionarResiduo(Scanner scanner, ListaCircular lista) {
+        System.out.print("Ingrese el ID del residuo: ");
+        int idBuscado = leerEntero(scanner);
+        Iterator<Residuo> it = lista.iteradorAdelante();
+        while (it.hasNext()) {
+            Residuo r = it.next();
+            if (r.getId() == idBuscado) return r;
+        }
+        System.out.println("ID no encontrado.");
+        return null;
+    }
 
     private static int leerEntero(Scanner scanner) {
-        while (!scanner.hasNextInt()) {
-            System.out.print("Ingrese un número válido: ");
-            scanner.next();
+        while (!scanner.hasNextInt()) { 
+            System.out.print("Entrada inválida. Ingrese número: ");
+            scanner.next(); 
         }
-        int val = scanner.nextInt();
-        scanner.nextLine(); // limpiar salto de línea
-        return val;
-    }
-
-    private static double leerDouble(Scanner scanner) {
-        while (!scanner.hasNextDouble()) {
-            System.out.print("Ingrese un valor numérico válido: ");
-            scanner.next();
-        }
-        double val = scanner.nextDouble();
+        int val = scanner.nextInt(); 
         scanner.nextLine();
         return val;
     }
 
-    // Registrar nuevo residuo y agregarlo a la lista circular
-    private static void registrarResiduo(Scanner scanner, ListaCircular lista) {
-        System.out.println("\n--- Registro de residuo ---");
-
-        System.out.print("ID: ");
-        int id = leerEntero(scanner);
-
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Tipo (Orgánico, Plástico, Vidrio, etc.): ");
-        String tipo = scanner.nextLine();
-
-        System.out.print("Peso (kg): ");
-        double peso = leerDouble(scanner);
-
-        System.out.print("Fecha de recolección (dd/mm/aaaa): ");
-        String fecha = scanner.nextLine();
-
-        System.out.print("Zona: ");
-        String zona = scanner.nextLine();
-
-        System.out.print("Prioridad ambiental (1=Alta, 2=Media, 3=Baja): ");
-        int prioridad = leerEntero(scanner);
-
-        Residuo r = new Residuo(id, nombre, tipo, peso, fecha, zona, prioridad);
-        lista.insertar(r);
-        System.out.println("Residuo registrado y agregado a la lista.");
-    }
-
-    // Permite elegir un residuo existente por ID desde la lista circular
-    private static Residuo seleccionarResiduo(Scanner scanner, ListaCircular lista) {
-        System.out.print("Ingrese el ID del residuo: ");
-        int idBuscado = leerEntero(scanner);
-
-        Iterator<Residuo> it = lista.iteradorAdelante();
-        while (it.hasNext()) {
-            Residuo r = it.next();
-            if (r.getId() == idBuscado) {
-                return r;
-            }
+    private static double leerDouble(Scanner scanner) {
+        while (!scanner.hasNextDouble()) { 
+            System.out.print("Entrada inválida. Ingrese peso: ");
+            scanner.next(); 
         }
-        System.out.println("No se encontró residuo con ese ID.");
-        return null;
-    }
-
-    // Ordenar residuos según criterio usando comparadores
-    private static void ordenarResiduos(Scanner scanner, ListaCircular lista) {
-        List<Residuo> aux = new ArrayList<>();
-        Iterator<Residuo> it = lista.iteradorAdelante();
-        while (it.hasNext()) {
-            aux.add(it.next());
-        }
-
-        if (aux.isEmpty()) {
-            System.out.println("No hay residuos para ordenar.");
-            return;
-        }
-
-        System.out.println("\nCriterio de ordenamiento:");
-        System.out.println("1. Por peso");
-        System.out.println("2. Por tipo");
-        System.out.println("3. Por prioridad ambiental");
-        System.out.print("Seleccione: ");
-
-        int op = leerEntero(scanner);
-
-        switch (op) {
-            case 1:
-                aux.sort(new ComparadorPeso());
-                System.out.println("\n--- Residuos ordenados por peso ---");
-                break;
-            case 2:
-                aux.sort(new ComparadorTipo());
-                System.out.println("\n--- Residuos ordenados por tipo ---");
-                break;
-            case 3:
-                aux.sort(new ComparadorPrioridad());
-                System.out.println("\n--- Residuos ordenados por prioridad ---");
-                break;
-            default:
-                System.out.println("Opción inválida.");
-                return;
-        }
-
-        for (Residuo r : aux) {
-            System.out.println(r);
-        }
+        double val = scanner.nextDouble(); 
+        scanner.nextLine();
+        return val;
     }
 }
