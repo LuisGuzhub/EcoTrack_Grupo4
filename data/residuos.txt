@@ -2,4 +2,4 @@
 4;Resto de comida;Org�nico;1.5;10/11/2025;Norte;1
 1;Luis;Plástico;0.9;11/12/2025;Centro;3
 8;Josue;Plastico;50.0;11/04/2025;Norte;1
-9;Steph;caca;6.0;11/10/2003;sur;3
+1;LUIS;PLASTICO;20.0;15/01/2026;SUR;1

@@ -17,7 +17,7 @@ public class ColaPrioridad {
     
     public ColaPrioridad() {
         this.frente = null;
-        this.tamaño = 0;
+        this.tamano = 0;
     }
 
     
@@ -38,7 +38,7 @@ public class ColaPrioridad {
             nuevo.siguiente = actual.siguiente;
             actual.siguiente = nuevo;
         }
-        tamaño++;
+        tamano++;
     }
 
     public Residuo desencolar() {
@@ -47,7 +47,7 @@ public class ColaPrioridad {
 
         Residuo dato = frente.dato;
         frente = frente.siguiente; // El siguiente pasa a ser el frente
-        tamaño--;
+        tamano--;
         return dato;
     }
 

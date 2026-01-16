@@ -1,0 +1,4 @@
+Centro;0;2
+Norte;0;2
+sur;0;1
+SUR;0;1
