@@ -1,5 +1,6 @@
 package ecotrack;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class ListaCircular {
@@ -89,6 +90,29 @@ public Iterator<Residuo> iteradorAtras() {
         }
     };
 }
+// MÉTODO DE ORDENAMIENTO PROPIO 
+    // Permite cambiar el criterio de ordenamiento sin usar ArrayLis
+    public void ordenar(Comparator<Residuo> comp) {
+        if (inicio == null || inicio.siguiente == inicio) return;
+
+        boolean intercambiado;
+        do {
+            intercambiado = false;
+            Nodo actual = inicio;
+            do {
+                Nodo siguiente = actual.siguiente;
+                // Comparamos usando el comparador pasado por parámetro (Peso, Tipo o Prioridad) 
+                if (comp.compare(actual.dato, siguiente.dato) > 0) {
+                    // Intercambio de datos del Residuo entre nodos
+                    Residuo temp = actual.dato;
+                    actual.dato = siguiente.dato;
+                    siguiente.dato = temp;
+                    intercambiado = true;
+                }
+                actual = siguiente;
+            } while (actual.siguiente != inicio); // Recorrido completo de la circular
+        } while (intercambiado);
+    }
 //Método de Eliminación (cuando un residuo se mueve a la cola de prioridad), la lista debe poder eliminar elementos)
 public boolean eliminar(int id) {
     if (inicio == null) return false;
