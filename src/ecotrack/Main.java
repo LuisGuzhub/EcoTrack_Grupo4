@@ -8,20 +8,20 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        // Corrección del error mostrado en imagen: System.in es el estándar [cite: 136]
+        // Corrección del error mostrado en imagen: System.in es el estándar 
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== SISTEMA ECO-TRACK ===");
         System.out.println("Gestión Inteligente de Residuos Urbanos [cite: 3]");
         System.out.println("----------------------------------------");
 
-        // Estructuras principales (Implementaciones propias obligatorias) [cite: 24, 81]
+        // Estructuras principales (Implementaciones propias obligatorias) 
         ListaCircular listaResiduos = new ListaCircular();
         ColaPrioridad colaRutas = new ColaPrioridad();
         PilaReciclaje pilaReciclaje = new PilaReciclaje();
         Utilidad utilidad = new Utilidad();
 
-        // Archivos de persistencia [cite: 77]
+        // Archivos de persistencia 
         String rutaResiduos = Paths.get("data", "residuos.txt").toString();
         String rutaZonas = Paths.get("data", "Zonas.txt").toString();
 
@@ -61,26 +61,26 @@ public class Main {
                     if (rEnc != null) colaRutas.encolar(rEnc);
                     break;
                 case 4:
-                    // Corrección: método sincronizado con ColaPrioridad propia
+                    // método sincronizado con ColaPrioridad propia
                     System.out.print(colaRutas.generarReporteCola()); 
                     break;
                 case 5:
-                    colaRutas.desencolar(); // Despacho automático [cite: 62]
+                    colaRutas.desencolar(); // Despacho automático 
                     break;
                 case 6:
                     Residuo rPila = seleccionarResiduo(scanner, listaResiduos);
-                    if (rPila != null) pilaReciclaje.apilar(rPila); // LIFO [cite: 64]
+                    if (rPila != null) pilaReciclaje.apilar(rPila); // LIFO 
                     break;
                 case 7:
                     pilaReciclaje.desapilar();
                     break;
                 case 8:
-                    // Análisis de utilidad ambiental [cite: 33]
+                    // Análisis de utilidad ambiental 
                     utilidad.construirDesdeResiduos(listaResiduos);
                     System.out.print(utilidad.generarReporteZonas());
                     break;
                 case 9:
-                    // Uso de comparadores obligatorios [cite: 87]
+                    // Uso de comparadores obligatorios 
                     ordenarResiduos(scanner, listaResiduos);
                     break;
                 case 10:
@@ -100,7 +100,7 @@ public class Main {
         scanner.close();
     }
 
-    // Método para manejar los 3 comparadores requeridos [cite: 87]
+    // Método para manejar los 3 comparadores requeridos 
     private static void ordenarResiduos(Scanner scanner, ListaCircular lista) {
         System.out.println("\nCriterio de ordenamiento:");
         System.out.println("1. Por peso\n2. Por tipo\n3. Por prioridad ambiental");
@@ -111,7 +111,7 @@ public class Main {
         else if (op == 2) comp = new ComparadorTipo();
         else comp = new ComparadorPrioridad();
 
-        lista.ordenar(comp); // Implementación de ordenamiento propia [cite: 81]
+        lista.ordenar(comp); // Implementación de ordenamiento propia 
         System.out.println("Lista ordenada exitosamente.");
         lista.mostrarAdelante();
     }
