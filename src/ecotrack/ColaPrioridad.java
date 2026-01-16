@@ -59,7 +59,7 @@ public class ColaPrioridad {
         Nodo temp = frente;
         while (temp != null) {
             sb.append(temp.dato).append("\n");
-            temp = temp.siguiente; // Solo un .siguiente
+            temp = temp.siguiente; 
         }
         return sb.toString();
     }

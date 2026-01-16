@@ -40,7 +40,7 @@ public class EcoTrackGUI extends JFrame {
         rutaResiduos = Paths.get("data", "residuos.txt").toString();
         rutaZonas = Paths.get("data", "Zonas.txt").toString();
 
-        // Cargar datos (Persistencia de inicio) [cite: 78]
+        // Cargar datos (Persistencia de inicio) 
         GestorArchivos.cargarResiduos(listaResiduos, rutaResiduos);
         GestorArchivos.cargarZonas(utilidad, rutaZonas);
 
@@ -48,7 +48,7 @@ public class EcoTrackGUI extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(245, 248, 250));
 
-        // Encabezado
+        // Encabesado
         JPanel header = new JPanel(new BorderLayout());
         header.setBorder(new EmptyBorder(10, 20, 10, 20));
         header.setBackground(new Color(25, 118, 210));

@@ -8,14 +8,14 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        // Corrección del error mostrado en imagen: System.in es el estándar 
+        
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== SISTEMA ECO-TRACK ===");
         System.out.println("Gestión Inteligente de Residuos Urbanos [cite: 3]");
         System.out.println("----------------------------------------");
 
-        // Estructuras principales (Implementaciones propias obligatorias) 
+        
         ListaCircular listaResiduos = new ListaCircular();
         ColaPrioridad colaRutas = new ColaPrioridad();
         PilaReciclaje pilaReciclaje = new PilaReciclaje();
@@ -80,7 +80,7 @@ public class Main {
                     System.out.print(utilidad.generarReporteZonas());
                     break;
                 case 9:
-                    // Uso de comparadores obligatorios 
+                    // Uso de comparadores  
                     ordenarResiduos(scanner, listaResiduos);
                     break;
                 case 10:
